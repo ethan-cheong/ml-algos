@@ -9,15 +9,16 @@ class LinearModel(ABC):
     pass
 
   @abstractmethod
-  def pred(X:np.ndarray) -> np.ndarray:
+  def predict(X:np.ndarray) -> np.ndarray:
     pass
   
 
 class LinearRegression(LinearModel):
   def __init__(self):
-    fitted_ = False
-    coef_ = 0
-    intercept_ = 0
+    self.fitted_ = False
+    self.coef_ = 0
+    self.intercept_ = 0
+
   def fit(self, X, y):
     n, k = X.shape
     X = np.hstack((np.ones([X.shape[0], 1]), X))
@@ -26,5 +27,7 @@ class LinearRegression(LinearModel):
     self.intercept_ = betas[0]
     self.coef_ = betas[1:]
     return self
-  def pred(self, X):
-    pass
+
+  def predict(self, X):
+    X = np.hstack((np.ones([X.shape[0], 1]), X))
+    return X @ np.insert(self.coef_, 0, self.intercept_, axis=0)
